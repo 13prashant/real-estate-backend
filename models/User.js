@@ -63,6 +63,8 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.pre("save", async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
   if (this.role === "customer" || this.role === "broker") {
     this.fullName = `${this.firstName} ${this.lastName}`;
     this.projects = undefined;
@@ -70,10 +72,10 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Encrypt password usning bcryptjs
-UserSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt(10);
-  this.password = bcrypt.hash(this.password, salt);
-});
+// UserSchema.pre("save", async function (next) {
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = bcrypt.hash(this.password, salt);
+// });
 
 // Sign jwt and return
 UserSchema.methods.getSignedJwtToken = function () {

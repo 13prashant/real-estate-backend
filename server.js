@@ -12,13 +12,17 @@ dotenv.config({ path: "./config/config.env" });
 connectDB();
 
 // Import routes
-const builders = require("./routes/builders");
+const users = require("./routes/users");
+// const builders = require("./routes/builders");
 const projects = require("./routes/projects");
-const customers = require("./routes/customers");
-const brokers = require("./routes/brokers");
+// const customers = require("./routes/customers");
+// const brokers = require("./routes/brokers");
 
 // Initialize express app
 const app = express();
+
+// Body parser
+app.use(express.json());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -26,10 +30,11 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Mount routers
-app.use("/api/v1/builders", builders);
+app.use("/api/v1/users", users);
+// app.use("/api/v1/builders", builders);
 app.use("/api/v1/projects", projects);
-app.use("/api/v1/customers", customers);
-app.use("/api/v1/brokers", brokers);
+// app.use("/api/v1/customers", customers);
+// app.use("/api/v1/brokers", brokers);
 
 app.use(errorHandler);
 
